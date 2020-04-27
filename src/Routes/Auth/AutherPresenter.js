@@ -49,44 +49,58 @@ const Form = styled(Box)`
 export default ({
   action,
   username,
-  password,
   firstName,
   lastName,
   email,
-  setAction
+  secret,
+  setAction,
+  onSubmit
 }) => {
   return (
     <Wrapper>
       <Form>
-        {action === "logIn" ? (
-          <form>
-            <Input placeholder={"Username"} {...username} />
-            <Input placeholder={"Password"} {...password} type="password" />
+        {action === "logIn" && (
+          <form onSubmit={onSubmit}>
+            <Input placeholder={"Email"} {...email} type="email" />
             <Button text={"Log In"} />
           </form>
-        ) : (
-          <form>
+        )}
+        {action === "signUp" && (
+          <form onSubmit={onSubmit}>
             <Input placeholder={"Firs tName"} {...firstName} />
             <Input placeholder={"Last Name"} {...lastName} />
             <Input placeholder={"Email"} {...email} type="email" />
             <Input placeholder={"Username"} {...username} />
-            <Input placeholder={"Password"} {...password} type="password" />
             <Button text={"Sign Up"} />
           </form>
         )}
-      </Form>
-      <StateChanger>
-        {action === "logIn" ? (
-          <>
-            계정이 없으신가요?
-            <Link onClick={() => setAction("signUp")}>회원가입</Link>
-          </>
-        ) : (
-          <>
-            회원이신가요? <Link onClick={() => setAction("logIn")}>로그인</Link>
-          </>
+        {action === "confirm" && (
+          <form onSubmit={onSubmit}>
+            <Input
+              placeholder="이메일로 할당한 secretkey를 입력하세요"
+              required
+              {...secret}
+            />
+            <Button text={"계속하기"} />
+          </form>
         )}
-      </StateChanger>
+      </Form>
+
+      {action !== "confirm" && (
+        <StateChanger>
+          {action === "logIn" ? (
+            <>
+              계정이 없으신가요?
+              <Link onClick={() => setAction("signUp")}>회원가입</Link>
+            </>
+          ) : (
+            <>
+              회원이신가요?{" "}
+              <Link onClick={() => setAction("logIn")}>로그인</Link>
+            </>
+          )}
+        </StateChanger>
+      )}
     </Wrapper>
   );
 };
