@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
@@ -60,29 +61,67 @@ export default ({
     <Wrapper>
       <Form>
         {action === "logIn" && (
-          <form onSubmit={onSubmit}>
-            <Input placeholder={"Email"} {...email} type="email" />
-            <Button text={"Log In"} />
-          </form>
+          <>
+            <Helmet>
+              <title>Log In | Prismagram</title>
+            </Helmet>
+            <form onSubmit={onSubmit}>
+              <Input
+                placeholder={"Email"}
+                value={email.value}
+                onChange={email.onChange}
+                type="email"
+              />
+              <Button text={"Log In"} />
+            </form>
+          </>
         )}
         {action === "signUp" && (
-          <form onSubmit={onSubmit}>
-            <Input placeholder={"Firs tName"} {...firstName} />
-            <Input placeholder={"Last Name"} {...lastName} />
-            <Input placeholder={"Email"} {...email} type="email" />
-            <Input placeholder={"Username"} {...username} />
-            <Button text={"Sign Up"} />
-          </form>
+          <>
+            <Helmet>
+              <title>Sing Up | Prismagram</title>
+            </Helmet>
+            <form onSubmit={onSubmit}>
+              <Input
+                placeholder={"First Name"}
+                value={firstName.value}
+                onChange={firstName.onChange}
+              />
+              <Input
+                placeholder={"Last Name"}
+                value={lastName.value}
+                onChange={lastName.onChange}
+              />
+              <Input
+                placeholder={"Email"}
+                value={email.value}
+                onChange={email.onChange}
+                type="email"
+              />
+              <Input
+                placeholder={"Username"}
+                value={username.value}
+                onChange={username.value}
+              />
+              <Button text={"Sign Up"} />
+            </form>
+          </>
         )}
         {action === "confirm" && (
-          <form onSubmit={onSubmit}>
-            <Input
-              placeholder="이메일로 할당한 secretkey를 입력하세요"
-              required
-              {...secret}
-            />
-            <Button text={"계속하기"} />
-          </form>
+          <>
+            <Helmet>
+              <title>Confirm Secret | Prismagram</title>
+            </Helmet>
+            <form onSubmit={onSubmit}>
+              <Input
+                placeholder="이메일로 할당한 secretkey를 입력하세요"
+                required
+                value={secret.value}
+                onChange={secret.onChange}
+              />
+              <Button text={"계속하기"} />
+            </form>
+          </>
         )}
       </Form>
 

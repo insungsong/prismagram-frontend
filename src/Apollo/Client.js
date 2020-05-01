@@ -7,5 +7,8 @@ export default new ApolloClient({
     //cache값을 받을때 효휼적으로 사용가능하다.
     defaults,
     resolvers
+  },
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
   }
 });
