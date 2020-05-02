@@ -17,3 +17,11 @@ export const ADD_COMMENT = gql`
     }
   }
 `;
+
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($commentId: String!) {
+    deleteComment(commentId: $commentId) {
+      id
+    }
+  }
+`;

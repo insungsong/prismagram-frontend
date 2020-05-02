@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQuerise";
+import { TOGGLE_LIKE, ADD_COMMENT, DELETE_COMMENT } from "./PostQuerise";
 import { ME } from "../../SharedQuerise";
 import { toast } from "react-toastify";
 
@@ -30,6 +30,9 @@ export const PostContainer = ({
   const [addCommentMutation] = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
+
+  const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
+
   const slide = () => {
     const totalFiles = files.length;
     if (currentItem === totalFiles - 1) {
@@ -62,7 +65,7 @@ export const PostContainer = ({
         const {
           data: { addComment }
         } = await addCommentMutation();
-        console.log(addComment);
+
         setSelfComments([...selfComments, addComment]);
         comment.setValue("");
       } catch {
@@ -73,6 +76,25 @@ export const PostContainer = ({
     return;
   };
 
+  const CommentDeadProcessing = async (data) => {
+    const commentBox = await comments.map((comment) => comment.id);
+    for (var i = 0; i <= commentBox.length; i++) {
+      if (data === commentBox[i]) {
+        console.log(commentBox[i]);
+        console.log("great!");
+        const {
+          data: { deleteComment }
+        } = await deleteCommentMutation({
+          variables: { commentId: data }
+        });
+        comments.splice(i, 1);
+      } else {
+        console.log(
+          "<svg>가 아닌 path를 누른 오류가 발생하여 id를 얻어올 수 없었습니다"
+        );
+      }
+    }
+  };
   return (
     <PostPresenter
       user={user}
@@ -90,6 +112,7 @@ export const PostContainer = ({
       toggleLike={toggleLike}
       onkeyPress={onkeyPress}
       selfComments={selfComments}
+      CommentDeadProcessing={CommentDeadProcessing}
     />
   );
 };

@@ -3,7 +3,12 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import {
+  HeartFull,
+  HeartEmpty,
+  Comment as CommentIcon,
+  DeleteButton
+} from "../Icons";
 
 const Post = styled.div`
   ${(props) => props.theme.whiteBox};
@@ -96,6 +101,13 @@ const Comment = styled.li`
   }
 `;
 
+const DeleteButtonTag = styled.span`
+  margin-bottom: 7px;
+  span {
+    margin-right: 5px;
+  }
+`;
+
 export default ({
   user: { username, avatar },
   location,
@@ -108,7 +120,8 @@ export default ({
   toggleLike,
   onkeyPress,
   comments,
-  selfComments
+  selfComments,
+  CommentDeadProcessing
 }) => (
   <Post>
     <Header>
@@ -145,6 +158,25 @@ export default ({
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
+              <DeleteButtonTag
+                onClick={async (data) => {
+                  console.log(data.target);
+                  //DeleteButton에 id를 주고 그 태그를 target.id로 가져옴
+                  //console.log(data.target.id);
+
+                  //data.target.id로 문자열이 넘어온다는것이 Icons에 단점..
+                  const originalComment = await data.target.id;
+                  //console.log(originalComment);
+
+                  //가져온것이 {"id":"ck9mkd7999v7z0981hvwldlgk"}이딴식으로 되어있어서 자름
+                  const changeComment = await originalComment.substring(7, 32);
+                  console.log(changeComment);
+
+                  return CommentDeadProcessing(changeComment);
+                }}
+              >
+                <DeleteButton id={comment.id} />
+              </DeleteButtonTag>
             </Comment>
           ))}
           {selfComments.map((comment) => (

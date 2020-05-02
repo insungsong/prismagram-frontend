@@ -68,7 +68,6 @@ export default withRouter(({ history }) => {
   const { loading, data } = useQuery(ME);
   if (loading) return "";
   const { me } = data;
-  console.log(me);
   const onSearchSubmit = (event) => {
     event.preventDefault();
     history.push(`/search?term=${search.value}`);
