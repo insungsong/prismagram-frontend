@@ -166,7 +166,7 @@ export default ({
 
                   //data.target.id로 문자열이 넘어온다는것이 Icons에 단점..
                   const originalComment = await data.target.id;
-                  //console.log(originalComment);
+                  console.log(originalComment);
 
                   //가져온것이 {"id":"ck9mkd7999v7z0981hvwldlgk"}이딴식으로 되어있어서 자름
                   const changeComment = await originalComment.substring(7, 32);

@@ -101,7 +101,7 @@ export default ({
               <Input
                 placeholder={"Username"}
                 value={username.value}
-                onChange={username.value}
+                onChange={username.onChange}
               />
               <Button text={"Sign Up"} />
             </form>
