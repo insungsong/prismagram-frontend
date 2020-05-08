@@ -9,6 +9,7 @@ import {
   Comment as CommentIcon,
   DeleteButton
 } from "../Icons";
+import { Link } from "react-router-dom";
 
 const Post = styled.div`
   ${(props) => props.theme.whiteBox};
@@ -16,6 +17,9 @@ const Post = styled.div`
   max-width: 600px;
   user-select: none;
   margin-bottom: 25px;
+  a {
+    color: inherit;
+  }
 `;
 
 const Header = styled.header`
@@ -127,7 +131,9 @@ export default ({
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
-        <FatText text={username} />
+        <Link to={`/${username}`}>
+          <FatText text={username} />
+        </Link>
         <Location>{location}</Location>
       </UserColumn>
     </Header>

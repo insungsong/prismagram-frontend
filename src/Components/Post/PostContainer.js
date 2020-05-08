@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
-import { useMutation, useQuery } from "react-apollo-hooks";
+import { useMutation } from "react-apollo-hooks";
 import { TOGGLE_LIKE, ADD_COMMENT, DELETE_COMMENT } from "./PostQuerise";
-import { ME } from "../../SharedQuerise";
+
 import { toast } from "react-toastify";
 
 export const PostContainer = ({
@@ -21,9 +21,10 @@ export const PostContainer = ({
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
+  const [deleteCommentS, setDeleteCommentS] = useState("");
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
-  const { data: meQuery } = useQuery(ME);
+
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
   });
@@ -42,9 +43,9 @@ export const PostContainer = ({
     }
   };
   useEffect(() => {
-    //componentDidMount에서 작동한다.
     slide();
-  }, [currentItem]); //그리고 currentItem이 변할때마다 실행되는 것이다 뭐가 다시 slide()가
+  }, [currentItem]);
+  //그리고 currentItem이 변할때마다 실행되는 것이다 뭐가 다시 slide()가
 
   const toggleLike = () => {
     toggleLikeMutation();
@@ -77,24 +78,42 @@ export const PostContainer = ({
   };
 
   const CommentDeadProcessing = async (data) => {
-    const commentBox = await comments.map((comment) => comment.id);
-    for (var i = 0; i <= commentBox.length; i++) {
-      if (data === commentBox[i]) {
-        console.log(commentBox[i]);
-        console.log("great!");
-        const {
-          data: { deleteComment }
-        } = await deleteCommentMutation({
+    const commentBox = comments.map((comment) => comment.id);
+    const dataValue = commentBox.indexOf(data);
+
+    try {
+      if (dataValue !== null) {
+        await deleteCommentMutation({
           variables: { commentId: data }
         });
-        comments.splice(i, 1);
+        comments.splice(dataValue, 1);
+        setDeleteCommentS(dataValue);
       } else {
-        console.log(
-          "<svg>가 아닌 path를 누른 오류가 발생하여 id를 얻어올 수 없었습니다"
-        );
+        console.log("<svg>의 id를 가져올 수 없었습니다");
       }
+    } catch (error) {
+      console.log(error);
     }
   };
+  useEffect(() => {
+    console.log("useEffect용 console");
+  }, [deleteCommentS]);
+
+  // for문 사용 delete comment문
+  // for (var i = 0; i <= commentBox.length; i++) {
+  //   if (data === commentBox[i]) {
+  //     await deleteCommentMutation({
+  //       variables: { commentId: data }
+  //     });
+  //     delete comments[i];
+  //     //comments.splice(i, 1);
+  //   } else {
+  //     console.log(
+  //       "<svg>가 아닌 path를 누른 오류가 발생하여 id를 얻어올 수 없었습니다"
+  //     );
+  //   }
+  // }
+
   return (
     <PostPresenter
       user={user}

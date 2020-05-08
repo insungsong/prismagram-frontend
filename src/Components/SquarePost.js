@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { HeartFull, Comment, CommentFull } from "./Icons";
+import { HeartFull, CommentFull } from "./Icons";
 import { Link } from "react-router-dom";
 
 const Overlay = styled.div`
@@ -43,9 +43,9 @@ const NumberText = styled.span`
   font-size: 16px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file }) => (
+const SquarePost = ({ username, id, likeCount, commentCount, file }) => (
   <Container bg={file.url}>
-    <Link to={`/${file}`}>
+    <Link to={`/${username}/${id}`}>
       <Overlay>
         <Number>
           <HeartFull />
@@ -63,7 +63,7 @@ const SquarePost = ({ likeCount, commentCount, file }) => (
 SquarePost.propTypes = {
   likeCount: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
-  file: PropTypes.string.isRequired
+  file: PropTypes.object.isRequired
 };
 
 export default SquarePost;
